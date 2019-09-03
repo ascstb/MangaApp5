@@ -1,8 +1,11 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+androidExtensions {
+    experimental = true
+}
 
 android {
     compileSdkVersion 28
@@ -15,6 +18,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "API_SERVER_MANGATOWN", "\"http://www.mangatown.com/\""
+            buildConfigField "String", "MANGATOWN_GET_LATEST_RELEASES", "\"latest/{pageNumber}.htm\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
