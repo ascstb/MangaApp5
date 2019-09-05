@@ -1,6 +1,7 @@
 package com.ascstb.mangaapp5.presentation
 
 import android.os.Bundle
+import android.os.Parcelable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,9 +9,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ascstb.mangaapp5.R
+import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BaseFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +33,13 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onFocused() {
+        Timber.d("MainActivity_TAG: onFocused: ")
+    }
+
+    override fun onClicked(data: Parcelable?) {
+        Timber.d("MainActivity_TAG: onClicked: data: $data")
     }
 }

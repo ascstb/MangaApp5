@@ -2,18 +2,18 @@ package com.ascstb.mangaapp5.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.ascstb.mangaapp5.R
+import com.ascstb.mangaapp5.BR
+import com.ascstb.mangaapp5.databinding.FragmentHomeBinding
+import com.ascstb.mangaapp5.presentation.base.BaseFragment
+import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<BaseFragmentListener, HomeViewModel, FragmentHomeBinding>() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    /*private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,5 +31,27 @@ class HomeFragment : Fragment() {
         })
 
         return root
+    }*/
+    private val viewModel by viewModel<HomeViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm = viewModel
+
+        vm.onPropertyChanged(BR.latestManga) {
+            Timber.d("HomeFragment_TAG: onCreate: onLatestMangaChanged: ${vm.latestManga.size}")
+        }
     }
+
+    override fun inflateDataBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentHomeBinding =
+        FragmentHomeBinding.inflate(inflater, container, false).also { layout ->
+            vm.text.observe(this, Observer {
+                layout.textHome.text = it
+            })
+
+            vm.getLatestMangaAsync()
+        }
 }
