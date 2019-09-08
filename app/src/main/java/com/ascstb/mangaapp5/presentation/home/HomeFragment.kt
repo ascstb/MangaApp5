@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ascstb.mangaapp5.BR
+import com.ascstb.mangaapp5.core.MANGA_DATA
 import com.ascstb.mangaapp5.core.Session
 import com.ascstb.mangaapp5.databinding.FragmentHomeBinding
+import com.ascstb.mangaapp5.model.Manga
 import com.ascstb.mangaapp5.presentation.base.BaseFragment
 import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,9 +43,7 @@ class HomeFragment : BaseFragment<BaseFragmentListener, HomeViewModel, FragmentH
         }
 
     private fun initRecyclerView(layout: FragmentHomeBinding) {
-        mangaAdapter = RVMangasAdapter { _, manga ->
-            Timber.d("HomeFragment_TAG: initRecyclerView: mangaClicked: $manga")
-        }
+        mangaAdapter = RVMangasAdapter { _, manga -> onMangaClicked(manga)}
 
         layout.rvMangas.apply {
             layoutManager = GridLayoutManager(context, Session.columnsToDisplay)
@@ -65,5 +65,14 @@ class HomeFragment : BaseFragment<BaseFragmentListener, HomeViewModel, FragmentH
         layout.swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
         }
+    }
+
+    private fun onMangaClicked(manga: Manga) {
+        Timber.d("HomeFragment_TAG: onMangaClicked: $manga")
+        listener?.onClicked(
+            fromFragment = this,
+            extras = Bundle().apply {
+                putParcelable(MANGA_DATA, manga)
+            })
     }
 }

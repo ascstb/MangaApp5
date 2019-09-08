@@ -1,18 +1,21 @@
 package com.ascstb.mangaapp5.presentation
 
 import android.os.Bundle
-import android.os.Parcelable
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
+import com.ascstb.mangaapp5.presentation.navigation.Navigation
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), BaseFragmentListener {
+    private val navigation by inject<Navigation>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +29,9 @@ class MainActivity : AppCompatActivity(), BaseFragmentListener {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home,
+                R.id.navigation_home/*,
                 R.id.navigation_dashboard,
-                R.id.navigation_notifications
+                R.id.navigation_notifications*/
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -39,7 +42,12 @@ class MainActivity : AppCompatActivity(), BaseFragmentListener {
         Timber.d("MainActivity_TAG: onFocused: ")
     }
 
-    override fun onClicked(data: Parcelable?) {
-        Timber.d("MainActivity_TAG: onClicked: data: $data")
+    override fun onClicked(fromFragment: Fragment, extras: Bundle?) {
+        Timber.d("MainActivity_TAG: onClicked:")
+        navigation.goToDetails(
+            activity = this,
+            fromFragment = fromFragment,
+            extras = extras
+        )
     }
 }

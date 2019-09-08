@@ -1,8 +1,9 @@
 package com.ascstb.mangaapp5.presentation.base
 
-import android.os.Parcelable
+import android.os.Bundle
+import androidx.fragment.app.Fragment
 
 interface BaseFragmentListener {
     fun onFocused()
-    fun onClicked(data: Parcelable? = null)
+    fun onClicked(fromFragment: Fragment, extras: Bundle? = null)
 }

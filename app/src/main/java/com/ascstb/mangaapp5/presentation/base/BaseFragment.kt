@@ -16,6 +16,8 @@ abstract class BaseFragment<L : BaseFragmentListener, VM : BaseViewModel, VDB : 
     protected lateinit var lInflater: LayoutInflater
     protected var listener: L? = null
 
+    var customTag = this.tag
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
