@@ -1,8 +1,6 @@
 package com.ascstb.mangaapp5.presentation.home
 
 import androidx.databinding.Bindable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.ascstb.mangaapp5.BR
 import com.ascstb.mangaapp5.model.Manga
 import com.ascstb.mangaapp5.presentation.base.BaseViewModel
@@ -15,25 +13,47 @@ class HomeViewModel(
     private val repository: ServerRepository
 ) : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
-
     @get:Bindable
     var latestManga = emptyList<Manga>()
         set(value) {
             field = value
+
+            val tempList = value.map { MangaItemViewModel().apply { manga = it } }.toMutableList()
+            if (currentPage == 1) {
+                recyclerItemsViewModel = tempList
+            } else {
+                recyclerItemsViewModel.addAll(tempList)
+            }
+
             notifyPropertyChanged(BR.latestManga)
         }
 
+    var currentPage: Int = 1
+        set(value) {
+            field = value
+            getLatestMangaAsync()
+        }
+
+    var recyclerItemsViewModel = mutableListOf<MangaItemViewModel>()
+        private set
+
     fun getLatestMangaAsync() = background {
         Timber.d("HomeViewModel_TAG: getLatestMangaAsync: ")
-        repository.getLatestReleasesAsync().runOnResult {
+        repository.getLatestReleasesAsync(currentPage).runOnResult {
             when (this) {
                 is RepositoryResponse.Error -> Timber.d("HomeViewModel_TAG: getLatestMangaAsync: error: $error")
                 is RepositoryResponse.Ok -> latestManga = result
             }
         }
+    }
+
+    fun endOfScroll() {
+        Timber.d("HomeViewModel_TAG: endOfScroll: currentPage: $currentPage")
+        currentPage++
+    }
+
+    fun refresh() {
+        Timber.d("HomeViewModel_TAG: refresh: currentPage: $currentPage")
+        currentPage = 1
     }
 }

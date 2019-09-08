@@ -20,7 +20,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "API_SERVER_MANGATOWN", "\"http://www.mangatown.com/\""
-            buildConfigField "String", "MANGATOWN_GET_LATEST_RELEASES", "\"latest/1.htm\""
+            buildConfigField "String", "MANGATOWN_GET_LATEST_RELEASES", "\"latest/{page}.htm\""
         }
         release {
             minifyEnabled false

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ascstb.mangaapp5.presentation.home.MangaItemViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/item_default_margin">
+        <ImageView
+            android:contentDescription="@{viewModel.title}"
+            android:id="@+id/imgCover"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            app:imageUrl="@{viewModel.coverUrl}"/>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@{viewModel.title}"
+            tools:text="{viewModel.title}"/>
+    </LinearLayout>
+</layout>

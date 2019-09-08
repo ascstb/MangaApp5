@@ -7,7 +7,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import pl.droidsonroids.retrofit2.JspoonConverterFactory
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 val apiModule = module {
@@ -24,7 +23,6 @@ inline fun <reified T> createWebService(okHttpClient: OkHttpClient, url: String)
         .baseUrl(url)
         .client(okHttpClient)
         .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
-//        .addConverterFactory(MoshiConverterFactory.create())
         .addConverterFactory(JspoonConverterFactory.create())
         .build()
         .create(T::class.java)
