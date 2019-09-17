@@ -12,17 +12,36 @@ import timber.log.Timber
 class NavigationImpl : Navigation {
     override fun goToDetails(activity: AppCompatActivity, fromFragment: Fragment, extras: Bundle?) {
         Timber.d("NavigationImpl_TAG: goToDetails: from: $fromFragment")
-        val detailsScreen = getNextScreen(fromFragment::class.java) ?: return
+        val detailsScreen = getDetailsScreen(fromFragment::class.java) ?: return
 
         navigateToContent(activity, detailsScreen, extras)
     }
 
-    private fun getNextScreen(from: Class<*>): Fragment? = when (from) {
+    override fun menuClicked(
+        activity: AppCompatActivity,
+        menuTitle: Navigation.MenuTitle,
+        extras: Bundle?
+    ) {
+        Timber.d("NavigationImpl_TAG: menuClicked: $menuTitle")
+        val menuFragment = when (menuTitle) {
+            Navigation.MenuTitle.HOME,
+            Navigation.MenuTitle.ADVANCE_SEARCH,
+            Navigation.MenuTitle.FAVORITES -> HomeFragment()
+            else -> return
+        }
+        navigateToContent(activity, menuFragment, extras)
+    }
+
+    private fun getDetailsScreen(from: Class<*>): Fragment? = when (from) {
         HomeFragment::class.java -> MangaDetailsFragment()
         else -> null
     }
 
-    private fun navigateToContent(activity: AppCompatActivity, fragment: Fragment, extras: Bundle? = null) {
+    private fun navigateToContent(
+        activity: AppCompatActivity,
+        fragment: Fragment,
+        extras: Bundle? = null
+    ) {
         Timber.d("NavigationImpl_TAG: navigateToContent: extras: $extras")
         fragment.arguments = extras
 
