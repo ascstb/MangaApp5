@@ -19,7 +19,7 @@ abstract class BaseFragment<L : BaseFragmentListener, VM : BaseViewModel, VDB : 
     var customTag = this.tag
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         @Suppress("UNCHECKED_CAST")
