@@ -3,9 +3,9 @@ package com.ascstb.mangaapp5.presentation.home
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ascstb.mangaapp5.BR
 import com.ascstb.mangaapp5.core.MANGA_DATA
 import com.ascstb.mangaapp5.core.Session
 import com.ascstb.mangaapp5.databinding.FragmentHomeBinding

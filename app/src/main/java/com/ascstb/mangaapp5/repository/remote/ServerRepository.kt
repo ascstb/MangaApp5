@@ -6,4 +6,5 @@ import kotlinx.coroutines.Deferred
 
 interface ServerRepository {
     fun getLatestReleasesAsync(page: Int): Deferred<RepositoryResponse<List<Manga>>>
+    fun getMangaDetailsAsync(path: String): Deferred<RepositoryResponse<Manga>>
 }

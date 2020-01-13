@@ -49,15 +49,17 @@
             app:layout_constraintStart_toEndOf="@id/ivCover"
             app:layout_constraintTop_toTopOf="@id/ivCover" />
 
-        <LinearLayout
+        <TextView
             android:id="@+id/llAuthors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
             android:orientation="vertical"
+            android:text="@{viewModel.authors}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvAuthorsLabel"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            tools:text="ENDOU Tatsuya" />
         <!--endregion-->
 
         <!--region Artists-->
@@ -71,15 +73,17 @@
             app:layout_constraintStart_toEndOf="@id/ivCover"
             app:layout_constraintTop_toBottomOf="@id/llAuthors" />
 
-        <LinearLayout
+        <TextView
             android:id="@+id/llArtists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
             android:orientation="vertical"
+            android:text="@{viewModel.artists}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvArtistsLabel"
-            app:layout_constraintTop_toBottomOf="@id/llAuthors" />
+            app:layout_constraintTop_toBottomOf="@id/llAuthors"
+            tools:text="ENDOU Tatsuya" />
         <!--endregion-->
 
         <!--region Status-->
@@ -98,6 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:text="@{viewModel.status}"
             app:layout_constraintStart_toEndOf="@id/tvStatusLabel"
             app:layout_constraintTop_toBottomOf="@id/llArtists"
             tools:text="Ongoing" />

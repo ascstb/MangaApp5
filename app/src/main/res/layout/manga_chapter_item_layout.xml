@@ -18,6 +18,8 @@
             android:id="@+id/tvChapterLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="web"
+            app:htmlContent="@{viewModel.chapterActionHtml}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="C.32" />
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:text="@{viewModel.comment}"
             app:layout_constraintStart_toEndOf="@id/tvChapterLink"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="The art of [This H ... ather]" />
@@ -36,6 +39,7 @@
             android:id="@+id/tvReleaseDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{viewModel.updatedAt}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="May 23, 2019" />

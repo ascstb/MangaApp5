@@ -14,4 +14,9 @@ class ServerRepositoryImpl(
         when (Session.selectedProvider) {
             MangaProvidersEnum.MANGATOWN -> mangaTownProvider.getLatestReleasesAsync(page)
         }
+
+    override fun getMangaDetailsAsync(path: String): Deferred<RepositoryResponse<Manga>> =
+        when (Session.selectedProvider) {
+            MangaProvidersEnum.MANGATOWN -> mangaTownProvider.getMangaDetailsAsync(path)
+        }
 }

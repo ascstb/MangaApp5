@@ -5,7 +5,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Manga(
-    var title: String,
-    var coverUrl: String,
-    var url: String
+    var title: String = "",
+    var coverUrl: String = "",
+    var url: String = "",
+    var authors: List<String> = listOf(),
+    var artists: List<String> = listOf(),
+    var status: String = "",
+    var chapterList: List<MangaChapter> = listOf()
 ) : Parcelable

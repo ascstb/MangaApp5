@@ -1,7 +1,7 @@
 package com.ascstb.mangaapp5.presentation.home
 
 import androidx.databinding.Bindable
-import com.ascstb.mangaapp5.BR
+import androidx.databinding.library.baseAdapters.BR
 import com.ascstb.mangaapp5.model.Manga
 import com.ascstb.mangaapp5.presentation.base.BaseViewModel
 import com.ascstb.mangaapp5.repository.RepositoryResponse
@@ -28,7 +28,7 @@ class HomeViewModel(
             notifyPropertyChanged(BR.latestManga)
         }
 
-    var currentPage: Int = 1
+    private var currentPage: Int = 1
         set(value) {
             field = value
             getLatestMangaAsync()
