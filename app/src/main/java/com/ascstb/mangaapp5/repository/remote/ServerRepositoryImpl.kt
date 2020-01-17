@@ -2,6 +2,7 @@ package com.ascstb.mangaapp5.repository.remote
 
 import com.ascstb.mangaapp5.core.Session
 import com.ascstb.mangaapp5.model.Manga
+import com.ascstb.mangaapp5.model.MangaChapter
 import com.ascstb.mangaapp5.model.MangaProvidersEnum
 import com.ascstb.mangaapp5.repository.RepositoryResponse
 import com.ascstb.mangaapp5.repository.remote.mangaTown.MangaTownProvider
@@ -19,4 +20,11 @@ class ServerRepositoryImpl(
         when (Session.selectedProvider) {
             MangaProvidersEnum.MANGATOWN -> mangaTownProvider.getMangaDetailsAsync(path)
         }
+
+    override fun getMangaPageAsync(
+        path: String,
+        pageNumber: Int
+    ): Deferred<RepositoryResponse<MangaChapter>> = when (Session.selectedProvider) {
+        MangaProvidersEnum.MANGATOWN -> mangaTownProvider.getMangaPageAsync(path, pageNumber)
+    }
 }

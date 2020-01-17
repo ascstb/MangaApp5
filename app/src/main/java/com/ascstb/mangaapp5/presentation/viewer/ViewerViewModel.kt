@@ -13,4 +13,6 @@ class ViewerViewModel(
             field = value
             notifyChange()
         }
+
+    var currentPageIndex: Int = 0
 }

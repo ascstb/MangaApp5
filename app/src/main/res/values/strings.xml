@@ -13,4 +13,5 @@
     <string name="comments_button">Comments</string>
     <string name="subscribe_button">Subscribe</string>
     <string name="share_button">Share</string>
+    <string name="image_content_description">Image</string>
 </resources>

@@ -3,6 +3,7 @@ package com.ascstb.mangaapp5.repository.remote.mangaTown
 import com.ascstb.mangaapp5.BuildConfig
 import com.ascstb.mangaapp5.repository.remote.mangaTown.reponses.LatestMangaResponse
 import com.ascstb.mangaapp5.repository.remote.mangaTown.reponses.MangaDetailsResponse
+import com.ascstb.mangaapp5.repository.remote.mangaTown.reponses.MangaPageResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,4 +18,9 @@ interface MangaTownAPI {
     fun getMangaDetailsAsync(
         @Path("path") path: String
     ): Deferred<MangaDetailsResponse>
+
+    @GET(BuildConfig.MANGATOWN_GET_PAGE)
+    fun getMangaPageAsync(
+        @Path("path") path: String
+    ): Deferred<MangaPageResponse>
 }

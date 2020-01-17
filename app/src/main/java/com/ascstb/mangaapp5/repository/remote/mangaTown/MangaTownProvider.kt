@@ -3,6 +3,7 @@ package com.ascstb.mangaapp5.repository.remote.mangaTown
 import com.ascstb.mangaapp5.BuildConfig
 import com.ascstb.mangaapp5.model.Manga
 import com.ascstb.mangaapp5.model.MangaChapter
+import com.ascstb.mangaapp5.model.MangaPage
 import com.ascstb.mangaapp5.repository.RepositoryResponse
 import com.ascstb.mangaapp5.repository.remote.ServerRepository
 import kotlinx.coroutines.Deferred
@@ -67,4 +68,27 @@ class MangaTownProvider(
                 RepositoryResponse.Error(e)
             }
         }
+
+    override fun getMangaPageAsync(
+        path: String,
+        pageNumber: Int
+    ): Deferred<RepositoryResponse<MangaChapter>> = GlobalScope.async {
+        try {
+            RepositoryResponse.Ok(mangaTownAPI.getMangaPageAsync(path).await().let { response ->
+                MangaChapter(
+                    pages = response.pages.map {
+                        MangaPage(
+                            page = it.text,
+                            path = it.link,
+                            imageUrl = if (it.selected.isNotEmpty()) response.imageUrl else "",
+                            imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
+                        )
+                    }
+                )
+            })
+        } catch (e: Exception) {
+            Timber.d("MangaTownProvider_TAG: getMangaPageAsync: exception: ${e.message}")
+            RepositoryResponse.Error(e)
+        }
+    }
 }
