@@ -1,11 +1,18 @@
 package com.ascstb.mangaapp5.presentation.viewer
 
+import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import com.ascstb.mangaapp5.model.Manga
 import com.ascstb.mangaapp5.model.MangaChapter
+import com.ascstb.mangaapp5.model.MangaPage
 import com.ascstb.mangaapp5.presentation.base.BaseViewModel
+import com.ascstb.mangaapp5.repository.RepositoryResponse
+import com.ascstb.mangaapp5.repository.remote.ServerRepository
+import com.ascstb.mangaapp5.utils.runOnResult
+import timber.log.Timber
 
 class ViewerViewModel(
-
+    private val repository: ServerRepository
 ) : BaseViewModel() {
     var manga: Manga? = null
     var chapter: MangaChapter? = null
@@ -14,5 +21,39 @@ class ViewerViewModel(
             notifyChange()
         }
 
-    var currentPageIndex: Int = 0
+    @get:Bindable
+    var availablePages: List<MangaPage>? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.availablePages)
+            notifyChange()
+        }
+
+    var pageNumber: Int = 1
+
+    private val currentPage: MangaPage?
+        get() = chapter?.pages?.let {
+            if (it.size > pageNumber - 1)
+                it[pageNumber - 1]
+            else null
+        }
+
+    val currentPageImageUrl: String?
+        get() = currentPage?.imageUrl
+
+    fun getPageAsync() = background {
+        Timber.d("ViewerViewModel_TAG: getPageAsync: ")
+        chapter?.let { ch ->
+            repository.getMangaPageAsync(ch.url, pageNumber).runOnResult {
+                when (this) {
+                    is RepositoryResponse.Error -> Timber.d("ViewerViewModel_TAG: getPageAsync: error: $error")
+                    is RepositoryResponse.Ok -> {
+                        chapter?.pages = result.pages
+                        availablePages = result.pages
+                        notifyChange()
+                    }
+                }
+            }
+        }
+    }
 }

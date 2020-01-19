@@ -7,6 +7,7 @@ import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.core.Session
 import com.ascstb.mangaapp5.presentation.home.HomeFragment
 import com.ascstb.mangaapp5.presentation.mangaDetails.MangaDetailsFragment
+import com.ascstb.mangaapp5.presentation.viewer.ViewerFragment
 import timber.log.Timber
 
 class NavigationImpl : Navigation {
@@ -34,6 +35,7 @@ class NavigationImpl : Navigation {
 
     private fun getDetailsScreen(from: Class<*>): Fragment? = when (from) {
         HomeFragment::class.java -> MangaDetailsFragment()
+        MangaDetailsFragment::class.java -> ViewerFragment()
         else -> null
     }
 

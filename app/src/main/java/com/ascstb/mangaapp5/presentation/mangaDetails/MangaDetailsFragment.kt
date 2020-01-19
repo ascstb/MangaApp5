@@ -1,20 +1,19 @@
 package com.ascstb.mangaapp5.presentation.mangaDetails
 
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ascstb.mangaapp5.core.CHAPTER_DATA
 import com.ascstb.mangaapp5.core.MANGA_DATA
 import com.ascstb.mangaapp5.databinding.MangaDetailsFragmentBinding
+import com.ascstb.mangaapp5.model.MangaChapter
 import com.ascstb.mangaapp5.presentation.base.BaseFragment
 import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-
 
 class MangaDetailsFragment :
     BaseFragment<BaseFragmentListener, MangaDetailsViewModel, MangaDetailsFragmentBinding>() {
@@ -36,6 +35,7 @@ class MangaDetailsFragment :
         container: ViewGroup?
     ): MangaDetailsFragmentBinding =
         MangaDetailsFragmentBinding.inflate(inflater, container, false).also { layout ->
+            Timber.d("MangaDetailsFragment_TAG: inflateDataBinding: ")
             arguments?.let {
                 vm.manga = it.getParcelable(MANGA_DATA)
                 initRecyclerView(layout)
@@ -46,12 +46,7 @@ class MangaDetailsFragment :
 
     private fun initRecyclerView(layout: MangaDetailsFragmentBinding) {
         chapterAdapter =
-            RVChaptersAdapter { _, chapter ->
-                Timber.d("MangaDetailsFragment_TAG: initRecyclerView: onChapterClicked: ${chapter.url}")
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse(chapter.url))
-                startActivity(browserIntent)
-            }
+            RVChaptersAdapter { _, chapter -> onChapterClicked(chapter) }
 
         layout.rvChapters.apply {
             layoutManager = LinearLayoutManager(layout.root.context)
@@ -59,5 +54,19 @@ class MangaDetailsFragment :
         }
 
         chapterAdapter.itemList = viewModel.recyclerItemsViewModel
+    }
+
+    private fun onChapterClicked(chapter: MangaChapter) {
+        Timber.d("MangaDetailsFragment_TAG: onChapterClicked: ")
+        /*val browserIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(chapter.url))
+                startActivity(browserIntent)*/
+        listener?.onClicked(
+            fromFragment = this,
+            extras = Bundle().apply {
+                putParcelable(MANGA_DATA, vm.manga)
+                putParcelable(CHAPTER_DATA, chapter)
+            }
+        )
     }
 }

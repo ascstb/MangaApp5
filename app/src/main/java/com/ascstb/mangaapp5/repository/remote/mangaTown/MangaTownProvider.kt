@@ -74,13 +74,17 @@ class MangaTownProvider(
         pageNumber: Int
     ): Deferred<RepositoryResponse<MangaChapter>> = GlobalScope.async {
         try {
-            RepositoryResponse.Ok(mangaTownAPI.getMangaPageAsync(path).await().let { response ->
+            val formattedPath = if (path.endsWith("/")) {
+                "${path.replaceFirst(BuildConfig.API_SERVER_MANGATOWN, "")}$pageNumber.html"
+            } else path
+
+            RepositoryResponse.Ok(mangaTownAPI.getMangaPageAsync(formattedPath).await().let { response ->
                 MangaChapter(
                     pages = response.pages.map {
                         MangaPage(
                             page = it.text,
                             path = it.link,
-                            imageUrl = if (it.selected.isNotEmpty()) response.imageUrl else "",
+                            imageUrl = if (it.selected.isNotEmpty()) response.imageUrl.replace("//", "http://") else "",
                             imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
                         )
                     }

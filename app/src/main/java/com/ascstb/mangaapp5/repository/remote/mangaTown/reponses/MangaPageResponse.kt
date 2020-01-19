@@ -23,9 +23,9 @@ class OptionResponse {
     @Selector(value = "*")
     var text: String = ""
 
-    @Selector(value = "", attr = "value")
+    @Selector(value = "*", attr = "value")
     var link: String = ""
 
-    @Selector(value = "", attr = "selected")
+    @Selector(value = "*", attr = "selected")
     var selected: String = ""
 }
