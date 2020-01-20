@@ -37,21 +37,21 @@ class MangaTownProvider(
             try {
                 val formattedPath = path.replaceFirst(BuildConfig.API_SERVER_MANGATOWN, "")
                 RepositoryResponse.Ok(
-                    mangaTownAPI.getMangaDetailsAsync(formattedPath).await().let {
+                    mangaTownAPI.getMangaDetailsAsync(formattedPath).await().let { manga ->
                         Manga(
-                            title = it.title,
-                            authors = listOf(it.authors),
-                            artists = listOf(it.artists),
-                            status = it.status
+                            title = manga.title,
+                            authors = listOf(manga.authors),
+                            artists = listOf(manga.artists),
+                            status = manga.status
                                 .replace("Status(s):", "")
-                                .replace(it.title, "")
+                                .replace(manga.title, "")
                                 .replace(
                                     "will coming soon",
                                     ""
                                 ),
-                            chapterList = it.chapterList.map { chapter ->
+                            chapterList = manga.chapterList.map { chapter ->
                                 MangaChapter(
-                                    name = chapter.name,
+                                    name = chapter.name.replace(manga.title, ""),
                                     url = chapter.url.replaceFirst(
                                         "/",
                                         BuildConfig.API_SERVER_MANGATOWN
@@ -84,7 +84,10 @@ class MangaTownProvider(
                         MangaPage(
                             page = it.text,
                             path = it.link,
-                            imageUrl = if (it.selected.isNotEmpty()) response.imageUrl.replace("//", "http://") else "",
+                            imageUrl = if (it.selected.isNotEmpty()) response.imageUrl.replace(
+                                "//",
+                                "http://"
+                            ) else "",
                             imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
                         )
                     }

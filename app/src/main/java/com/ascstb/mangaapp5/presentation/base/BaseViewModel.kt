@@ -1,6 +1,7 @@
 package com.ascstb.mangaapp5.presentation.base
 
 import android.util.SparseArray
+import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,15 @@ import kotlinx.coroutines.*
 
 open class BaseViewModel : ViewModel(), Observable {
     private val jobs = mutableListOf<Job>()
-    protected var loading: Boolean = false
+
+    @Bindable
+    var loading: Boolean = false
+        set(value) {
+            field = value
+            notifyChange()
+        }
+
+
 
     @Transient
     private var mCallbacks: PropertyChangeRegistry? = null

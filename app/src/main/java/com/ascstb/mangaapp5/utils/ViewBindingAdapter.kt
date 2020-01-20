@@ -1,6 +1,7 @@
 package com.ascstb.mangaapp5.utils
 
 import android.text.Html
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -56,4 +57,10 @@ fun imageUrl(
 @BindingAdapter(value = ["htmlContent"], requireAll = false)
 fun htmlContent(tv: TextView, htmlContent: String?) {
     tv.text = Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_COMPACT)
+}
+
+@BindingAdapter("android:visibility")
+fun visibility(view: View, visible: Boolean?) = when (visible) {
+    true -> view.visibility = View.VISIBLE
+    else -> view.visibility = View.GONE
 }

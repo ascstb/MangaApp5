@@ -22,7 +22,7 @@ class ViewerViewModel(
         }
 
     @get:Bindable
-    var availablePages: List<MangaPage>? = null
+    var availablePages: List<MangaPage> = emptyList()
         set(value) {
             field = value
             notifyPropertyChanged(BR.availablePages)
@@ -30,6 +30,15 @@ class ViewerViewModel(
         }
 
     var pageNumber: Int = 1
+        set(value) {
+            field = when {
+                value <= 1 -> 1
+                value > availablePages.size -> availablePages.size
+                else -> value
+            }
+
+            getPageAsync()
+        }
 
     private val currentPage: MangaPage?
         get() = chapter?.pages?.let {
