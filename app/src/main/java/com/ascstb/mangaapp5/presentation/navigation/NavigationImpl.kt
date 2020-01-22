@@ -50,7 +50,7 @@ class NavigationImpl : Navigation {
         fragment: Fragment,
         extras: Bundle? = null
     ) {
-        Timber.d("NavigationImpl_TAG: navigateToContent: extras: $extras")
+        //Timber.d("NavigationImpl_TAG: navigateToContent: extras: $extras")
         fragment.arguments = extras
 
         activity.supportFragmentManager

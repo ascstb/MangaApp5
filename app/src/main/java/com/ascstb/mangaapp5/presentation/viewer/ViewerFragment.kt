@@ -4,14 +4,17 @@ package com.ascstb.mangaapp5.presentation.viewer
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
+import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.core.CHAPTER_DATA
 import com.ascstb.mangaapp5.core.MANGA_DATA
 import com.ascstb.mangaapp5.databinding.ViewerFragmentLayoutBinding
 import com.ascstb.mangaapp5.presentation.base.BaseFragment
 import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
 import com.ascstb.mangaapp5.utils.OnSwipeTouchListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -27,6 +30,20 @@ class ViewerFragment :
         vm.onPropertyChanged(BR.availablePages) {
             vm.loading = false
         }
+    }
+
+    override fun onStop() {
+        activity?.let {
+            it.findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+        }
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        activity?.let {
+            it.findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+        }
+        super.onDestroy()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -63,6 +80,10 @@ class ViewerFragment :
 
                 override fun onSwipeBottom() {}
             })
+
+            activity?.let {
+                it.findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
+            }
         }
 
     fun onVolumeDown() {

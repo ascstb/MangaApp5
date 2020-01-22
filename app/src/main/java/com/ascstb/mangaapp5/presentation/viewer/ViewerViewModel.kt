@@ -15,6 +15,11 @@ class ViewerViewModel(
     private val repository: ServerRepository
 ) : BaseViewModel() {
     var manga: Manga? = null
+
+    val availableChapters: List<MangaChapter>
+        get() = manga?.chapterList ?: emptyList()
+
+
     var chapter: MangaChapter? = null
         set(value) {
             field = value
@@ -57,8 +62,8 @@ class ViewerViewModel(
                 when (this) {
                     is RepositoryResponse.Error -> Timber.d("ViewerViewModel_TAG: getPageAsync: error: $error")
                     is RepositoryResponse.Ok -> {
-                        //chapter?.pages = result.pages
-                        chapter = result
+                        chapter?.pages = result.pages
+                        //chapter = result
                         availablePages = result.pages
                         notifyChange()
                     }
