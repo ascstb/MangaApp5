@@ -33,6 +33,12 @@ class NavigationImpl : Navigation {
         navigateToContent(activity, menuFragment, extras)
     }
 
+    override fun loadCurrentFragment(activity: AppCompatActivity) {
+        Session.currentFragment?.let {
+            navigateToContent(activity, it, it.arguments)
+        }
+    }
+
     private fun getDetailsScreen(from: Class<*>): Fragment? = when (from) {
         HomeFragment::class.java -> MangaDetailsFragment()
         MangaDetailsFragment::class.java -> ViewerFragment()

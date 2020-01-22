@@ -57,7 +57,8 @@ class ViewerViewModel(
                 when (this) {
                     is RepositoryResponse.Error -> Timber.d("ViewerViewModel_TAG: getPageAsync: error: $error")
                     is RepositoryResponse.Ok -> {
-                        chapter?.pages = result.pages
+                        //chapter?.pages = result.pages
+                        chapter = result
                         availablePages = result.pages
                         notifyChange()
                     }

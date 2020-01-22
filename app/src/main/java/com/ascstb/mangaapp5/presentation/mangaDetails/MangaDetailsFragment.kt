@@ -23,10 +23,11 @@ class MangaDetailsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = viewModel
-
+        vm.loading = true
         vm.onPropertyChanged(BR.availableChapters) {
             Timber.d("MangaDetailsFragment_TAG: onCreate: availableChaptersChanged")
             chapterAdapter.itemList = viewModel.recyclerItemsViewModel
+            vm.loading = false
         }
     }
 

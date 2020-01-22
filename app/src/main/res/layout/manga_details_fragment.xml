@@ -11,160 +11,177 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            style="@style/Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.title}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Homeless Tensei: Isekai De Jiyuu Sugiru Majutsu Jisoku Seikatsu" />
-
-        <ImageView
-            android:id="@+id/ivCover"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@{viewModel.title}"
-            app:imageUrl="@{viewModel.coverUrl}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            tools:src="@drawable/ic_home_black_24dp" />
-
-        <!--region Authors-->
-        <TextView
-            android:id="@+id/tvAuthorsLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/authors_label"
-            app:layout_constraintStart_toEndOf="@id/ivCover"
-            app:layout_constraintTop_toTopOf="@id/ivCover" />
-
-        <TextView
-            android:id="@+id/llAuthors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:orientation="vertical"
-            android:text="@{viewModel.authors}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvAuthorsLabel"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            tools:text="ENDOU Tatsuya" />
-        <!--endregion-->
-
-        <!--region Artists-->
-        <TextView
-            android:id="@+id/tvArtistsLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/artists_label"
-            app:layout_constraintStart_toEndOf="@id/ivCover"
-            app:layout_constraintTop_toBottomOf="@id/llAuthors" />
-
-        <TextView
-            android:id="@+id/llArtists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:orientation="vertical"
-            android:text="@{viewModel.artists}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvArtistsLabel"
-            app:layout_constraintTop_toBottomOf="@id/llAuthors"
-            tools:text="ENDOU Tatsuya" />
-        <!--endregion-->
-
-        <!--region Status-->
-        <TextView
-            android:id="@+id/tvStatusLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/status_label"
-            app:layout_constraintStart_toEndOf="@id/ivCover"
-            app:layout_constraintTop_toBottomOf="@id/llArtists" />
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@{viewModel.status}"
-            app:layout_constraintStart_toEndOf="@id/tvStatusLabel"
-            app:layout_constraintTop_toBottomOf="@id/llArtists"
-            tools:text="Ongoing" />
-        <!--endregion-->
-
-        <Button
-            android:id="@+id/btnStartReading"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/start_reading_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivCover"
-            app:layout_constraintTop_toBottomOf="@id/tvStatusLabel" />
-
-        <!--region Actions-->
-        <Button
-            android:id="@+id/btnBookmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bookmark_button"
-            app:layout_constraintEnd_toStartOf="@id/btnSubscribe"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivCover" />
-
-        <Button
-            android:id="@+id/btnSubscribe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subscribe_button"
-            app:layout_constraintEnd_toStartOf="@id/btnShare"
-            app:layout_constraintStart_toEndOf="@id/btnBookmark"
-            app:layout_constraintTop_toBottomOf="@id/ivCover" />
-
-        <Button
-            android:id="@+id/btnShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/share_button"
-            app:layout_constraintEnd_toStartOf="@id/btnComments"
-            app:layout_constraintStart_toEndOf="@id/btnSubscribe"
-            app:layout_constraintTop_toBottomOf="@id/ivCover" />
-
-        <Button
-            android:id="@+id/btnComments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/comments_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnShare"
-            app:layout_constraintTop_toBottomOf="@id/ivCover" />
-        <!--endregion-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChapters"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnBookmark" />
+            android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.title}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Homeless Tensei: Isekai De Jiyuu Sugiru Majutsu Jisoku Seikatsu" />
+
+            <ImageView
+                android:id="@+id/ivCover"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@{viewModel.title}"
+                app:imageUrl="@{viewModel.coverUrl}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:src="@drawable/ic_home_black_24dp" />
+
+            <!--region Authors-->
+            <TextView
+                android:id="@+id/tvAuthorsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/authors_label"
+                app:layout_constraintStart_toEndOf="@id/ivCover"
+                app:layout_constraintTop_toTopOf="@id/ivCover" />
+
+            <TextView
+                android:id="@+id/llAuthors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:orientation="vertical"
+                android:text="@{viewModel.authors}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvAuthorsLabel"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="ENDOU Tatsuya" />
+            <!--endregion-->
+
+            <!--region Artists-->
+            <TextView
+                android:id="@+id/tvArtistsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/artists_label"
+                app:layout_constraintStart_toEndOf="@id/ivCover"
+                app:layout_constraintTop_toBottomOf="@id/llAuthors" />
+
+            <TextView
+                android:id="@+id/llArtists"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:orientation="vertical"
+                android:text="@{viewModel.artists}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvArtistsLabel"
+                app:layout_constraintTop_toBottomOf="@id/llAuthors"
+                tools:text="ENDOU Tatsuya" />
+            <!--endregion-->
+
+            <!--region Status-->
+            <TextView
+                android:id="@+id/tvStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/status_label"
+                app:layout_constraintStart_toEndOf="@id/ivCover"
+                app:layout_constraintTop_toBottomOf="@id/llArtists" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@{viewModel.status}"
+                app:layout_constraintStart_toEndOf="@id/tvStatusLabel"
+                app:layout_constraintTop_toBottomOf="@id/llArtists"
+                tools:text="Ongoing" />
+            <!--endregion-->
+
+            <Button
+                android:id="@+id/btnStartReading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/start_reading_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivCover"
+                app:layout_constraintTop_toBottomOf="@id/tvStatusLabel" />
+
+            <!--region Actions-->
+            <Button
+                android:id="@+id/btnBookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bookmark_button"
+                app:layout_constraintEnd_toStartOf="@id/btnSubscribe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivCover" />
+
+            <Button
+                android:id="@+id/btnSubscribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_button"
+                app:layout_constraintEnd_toStartOf="@id/btnShare"
+                app:layout_constraintStart_toEndOf="@id/btnBookmark"
+                app:layout_constraintTop_toBottomOf="@id/ivCover" />
+
+            <Button
+                android:id="@+id/btnShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/share_button"
+                app:layout_constraintEnd_toStartOf="@id/btnComments"
+                app:layout_constraintStart_toEndOf="@id/btnSubscribe"
+                app:layout_constraintTop_toBottomOf="@id/ivCover" />
+
+            <Button
+                android:id="@+id/btnComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/comments_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnShare"
+                app:layout_constraintTop_toBottomOf="@id/ivCover" />
+            <!--endregion-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChapters"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnBookmark" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:visibility="@{viewModel.loading}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

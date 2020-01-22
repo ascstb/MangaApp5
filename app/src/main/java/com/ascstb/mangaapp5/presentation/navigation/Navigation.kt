@@ -8,6 +8,7 @@ import java.util.*
 interface Navigation {
     fun menuClicked(activity: AppCompatActivity, menuTitle: MenuTitle, extras: Bundle? = null)
     fun goToDetails(activity: AppCompatActivity, fromFragment: Fragment, extras: Bundle? = null)
+    fun loadCurrentFragment(activity: AppCompatActivity)
 
     enum class MenuTitle(val title: String) {
         HOME("home"),

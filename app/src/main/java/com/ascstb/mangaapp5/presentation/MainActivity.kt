@@ -33,10 +33,14 @@ class MainActivity : AppCompatActivity(), BaseFragmentListener {
             return@setOnNavigationItemSelectedListener true
         }
 
-        navigation.menuClicked(
-            activity = this,
-            menuTitle = Navigation.MenuTitle.HOME
-        )
+        if(Session.currentFragment == null) {
+            navigation.menuClicked(
+                activity = this,
+                menuTitle = Navigation.MenuTitle.HOME
+            )
+        } else {
+            navigation.loadCurrentFragment(this)
+        }
     }
 
     override fun onFocused() {

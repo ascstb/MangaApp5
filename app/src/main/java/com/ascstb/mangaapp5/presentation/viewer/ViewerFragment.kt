@@ -62,7 +62,6 @@ class ViewerFragment :
                 override fun onSwipeTop() {}
 
                 override fun onSwipeBottom() {}
-
             })
         }
 
