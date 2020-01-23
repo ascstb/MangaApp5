@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.model.MangaChapter
-import com.ascstb.mangaapp5.presentation.base.BaseSpinnerAdapter
+import com.ascstb.mangaapp5.presentation.viewer.MangaChapterSpinnerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import timber.log.Timber
 
 @BindingAdapter(
-    value = ["imageUrl", "iconResourceName", "roundedStyle", "placeHolder"],
+    value = ["imageUrl", "iconResourceName", "roundedStyle", "placeHolder", "onImageReady"],
     requireAll = false
 )
 fun imageUrl(
@@ -23,7 +23,8 @@ fun imageUrl(
     imageUrl: String?,
     iconResourceName: String?,
     roundedStyle: Boolean?,
-    placeHolder: Int = 0
+    placeHolder: Int = 0,
+    onImageReady: (() -> Unit)?
 ) {
     if (iconResourceName.isNullOrEmpty() && imageUrl.isNullOrEmpty()) {
         //Timber.d("_TAG: imageUrl: no image available, $placeHolder")
@@ -43,7 +44,31 @@ fun imageUrl(
                     )
                 ).into(view)
             } else {
-                Glide.with(view).load(imageUrl).into(view)
+                Glide.with(view)
+                    .load(imageUrl)
+                    /*.listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            onImageReady?.invoke()
+                            return false
+                        }
+
+                    })*/
+                    .into(view)
             }
         } else if (!iconResourceName.isNullOrEmpty()) {
             val drawableId = view.context.getDrawable(
@@ -53,7 +78,9 @@ fun imageUrl(
                     view.context.packageName
                 )
             )
-            Glide.with(view).load(drawableId).into(view)
+            Glide.with(view)
+                .load(drawableId)
+                .into(view)
         }
     } catch (e: Exception) {
         Timber.d("ViewBindingAdapter_TAG: iconUrl: $imageUrl, iconResourceName: $iconResourceName")
@@ -71,10 +98,17 @@ fun visibility(view: View, visible: Boolean?) = when (visible) {
     else -> view.visibility = View.GONE
 }
 
-@BindingAdapter("dataSource")
-fun dataSource(spinner: Spinner, dataSource: List<Any>?) {
+@Suppress("UNCHECKED_CAST")
+@BindingAdapter(value = ["dataSource", "selectVal"], requireAll = false)
+fun dataSource(spinner: Spinner, dataSource: List<Any>?, selectVal: (MangaChapter) -> Unit) {
     dataSource?.let { ds ->
-        spinner.adapter =
-            BaseSpinnerAdapter<MangaChapter>(spinner.context, R.layout.base_spinner_item_layout, ds as List<MangaChapter>)
+        spinner.adapter = MangaChapterSpinnerAdapter(
+            ctx = spinner.context,
+            resourceId = R.layout.base_spinner_item_layout,
+            dataSource = ds as List<MangaChapter>
+        ) { mangaChapterClicked ->
+            selectVal(mangaChapterClicked)
+        }
     }
 }
+

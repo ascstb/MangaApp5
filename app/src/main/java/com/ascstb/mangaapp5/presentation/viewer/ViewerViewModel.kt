@@ -19,10 +19,12 @@ class ViewerViewModel(
     val availableChapters: List<MangaChapter>
         get() = manga?.chapterList ?: emptyList()
 
-
+    @get:Bindable
     var chapter: MangaChapter? = null
         set(value) {
             field = value
+            pageNumber = 1
+            notifyPropertyChanged(BR.chapter)
             notifyChange()
         }
 
@@ -55,7 +57,16 @@ class ViewerViewModel(
     val currentPageImageUrl: String?
         get() = currentPage?.imageUrl
 
-    fun getPageAsync() = background {
+    @get:Bindable
+    var imageReady = false
+    set(value) {
+        field = value
+        if (value) {
+            notifyPropertyChanged(BR.imageReady)
+        }
+    }
+
+    private fun getPageAsync() = background {
         Timber.d("ViewerViewModel_TAG: getPageAsync: ")
         chapter?.let { ch ->
             repository.getMangaPageAsync(ch.url, pageNumber).runOnResult {
@@ -70,5 +81,15 @@ class ViewerViewModel(
                 }
             }
         }
+    }
+
+    val onChapterChanged = fun (mangaChapterClicked: MangaChapter) {
+        Timber.d("ViewerViewModel_TAG: chapterChanged: $mangaChapterClicked")
+        chapter = mangaChapterClicked
+    }
+
+    fun onImageReady() {
+        Timber.d("ViewerViewModel_TAG: onImageReady: ")
+        imageReady = true
     }
 }

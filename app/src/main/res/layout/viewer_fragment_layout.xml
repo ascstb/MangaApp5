@@ -6,14 +6,21 @@
         <variable
             name="viewModel"
             type="com.ascstb.mangaapp5.presentation.viewer.ViewerViewModel" />
+
+        <variable
+            name="mangaChapterClicked"
+            type="com.ascstb.mangaapp5.model.MangaChapter" />
+
     </data>
 
     <ScrollView
+        android:id="@+id/svContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/black">
@@ -26,6 +33,7 @@
                 android:background="@android:color/white"
                 android:padding="10dp"
                 app:dataSource="@{viewModel.availableChapters}"
+                app:selectVal="@{viewModel.onChapterChanged}"
                 app:layout_constraintEnd_toStartOf="@id/spPages"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +56,7 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_content_description"
                 app:imageUrl="@{viewModel.currentPageImageUrl}"
+                app:onImageReady="@{() -> viewModel.onImageReady()}"
                 app:layout_constraintTop_toBottomOf="@id/spChapters" />
 
             <ProgressBar
