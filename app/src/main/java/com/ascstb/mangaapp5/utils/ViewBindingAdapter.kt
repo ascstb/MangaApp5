@@ -107,6 +107,7 @@ fun dataSource(spinner: Spinner, dataSource: List<Any>?, selectVal: (MangaChapte
             resourceId = R.layout.base_spinner_item_layout,
             dataSource = ds as List<MangaChapter>
         ) { mangaChapterClicked ->
+            spinner.setSelection(dataSource.indexOf(mangaChapterClicked), true)
             selectVal(mangaChapterClicked)
         }
     }

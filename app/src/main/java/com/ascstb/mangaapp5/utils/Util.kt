@@ -1,6 +1,7 @@
 package com.ascstb.mangaapp5.utils
 
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import android.widget.Spinner
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +11,21 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
+
+inline fun View.waitForLayout(crossinline f: () -> Unit) = with(viewTreeObserver) {
+    addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            try {
+                removeOnGlobalLayoutListener(this)
+            } catch (e: Exception) {
+                Timber.d("_TAG: onGlobalLayout: ")
+            }
+            f()
+        }
+    })
+}
+
+
 
 @Suppress("UNCHECKED_CAST")
 fun <R> readInstanceProperty(instance: Any, propertyName: String): R {

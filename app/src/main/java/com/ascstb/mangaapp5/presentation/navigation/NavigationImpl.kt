@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class NavigationImpl : Navigation {
     override fun goToDetails(activity: AppCompatActivity, fromFragment: Fragment, extras: Bundle?) {
-        Timber.d("NavigationImpl_TAG: goToDetails: from: $fromFragment")
+        Timber.d("NavigationImpl_TAG: goToDetails: from: ${fromFragment::class.java.simpleName}")
         val detailsScreen = getDetailsScreen(fromFragment::class.java) ?: return
 
         navigateToContent(activity, detailsScreen, extras)

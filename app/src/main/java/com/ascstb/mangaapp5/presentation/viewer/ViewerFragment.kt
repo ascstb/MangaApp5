@@ -15,7 +15,7 @@ import com.ascstb.mangaapp5.presentation.base.BaseFragmentListener
 import com.ascstb.mangaapp5.utils.OnSwipeTouchListener
 import com.ascstb.mangaapp5.utils.focusOnView
 import com.ascstb.mangaapp5.utils.hideSpinnerDropDown
-import com.ascstb.mangaapp5.utils.wait
+import com.ascstb.mangaapp5.utils.waitForLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -35,7 +35,8 @@ class ViewerFragment :
 
         vm.onPropertyChanged(BR.chapter) {
             layout.spChapters.hideSpinnerDropDown()
-            wait(3) {
+            layout.spChapters.waitForLayout {
+                layout.spChapters.setSelection(vm.availableChapters.indexOf(vm.chapter), true)
                 layout.svContainer.focusOnView(layout.spChapters)
             }
         }

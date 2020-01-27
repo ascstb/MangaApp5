@@ -84,7 +84,7 @@ class ViewerViewModel(
     }
 
     val onChapterChanged = fun (mangaChapterClicked: MangaChapter) {
-        Timber.d("ViewerViewModel_TAG: chapterChanged: $mangaChapterClicked")
+        Timber.d("ViewerViewModel_TAG: chapterChanged: ${mangaChapterClicked.name}")
         chapter = mangaChapterClicked
     }
 
