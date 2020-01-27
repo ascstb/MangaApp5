@@ -4,6 +4,7 @@ import com.ascstb.mangaapp5.BuildConfig
 import com.ascstb.mangaapp5.model.Manga
 import com.ascstb.mangaapp5.model.MangaChapter
 import com.ascstb.mangaapp5.model.MangaPage
+import com.ascstb.mangaapp5.model.SearchParameters
 import com.ascstb.mangaapp5.repository.RepositoryResponse
 import com.ascstb.mangaapp5.repository.remote.ServerRepository
 import kotlinx.coroutines.Deferred
@@ -91,6 +92,79 @@ class MangaTownProvider(
                             imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
                         )
                     }.distinct()
+                )
+            })
+        } catch (e: Exception) {
+            Timber.d("MangaTownProvider_TAG: getMangaPageAsync: exception: ${e.message}")
+            RepositoryResponse.Error(e)
+        }
+    }
+
+    override fun getMangaSearchResultsAsync(
+        searchParams: SearchParameters
+    ): Deferred<RepositoryResponse<List<Manga>>> = GlobalScope.async {
+        try {
+            RepositoryResponse.Ok(mangaTownAPI.getSearchAsync(
+                nameMethod = searchParams.nameMethod,
+                name = searchParams.name,
+                authorMethod = searchParams.authorMethod,
+                author = searchParams.author,
+                artistMethod = searchParams.artistMethod,
+                artist = searchParams.artist,
+                type = searchParams.type,
+                demographic = searchParams.demographic,
+                genres4Koma = searchParams.genres4Koma,
+                genresAction = searchParams.genresAction,
+                genresAdventure = searchParams.genresAdventure,
+                genresComedy = searchParams.genresComedy,
+                genresCooking = searchParams.genresCooking,
+                genresDoujinshi = searchParams.genresDoujinshi,
+                genresDrama = searchParams.genresDrama,
+                genresEcchi = searchParams.genresEcchi,
+                genresFantasy = searchParams.genresFantasy,
+                genresGenderBender = searchParams.genresGenderBender,
+                genresHarem = searchParams.genresHarem,
+                genresHistorical = searchParams.genresHistorical,
+                genresHorror = searchParams.genresHorror,
+                genresJosei = searchParams.genresJosei,
+                genresLolicon = searchParams.genresLolicon,
+                genresMartialArts = searchParams.genresMartialArts,
+                genresMature = searchParams.genresMature,
+                genresMecha = searchParams.genresMecha,
+                genresMusic = searchParams.genresMusic,
+                genresMystery = searchParams.genresMystery,
+                genresOneShot = searchParams.genresOneShot,
+                genresPsychological = searchParams.genresPsychological,
+                genresReverseHarem = searchParams.genresReverseHarem,
+                genresRomance = searchParams.genresRomance,
+                genresSchoolLife = searchParams.genresSchoolLife,
+                genresSciFi = searchParams.genresSciFi,
+                genresSciMFi = searchParams.genresSciMFi,
+                genresSeinen = searchParams.genresSeinen,
+                genresShotacon = searchParams.genresShotacon,
+                genresShoujo = searchParams.genresShoujo,
+                genresShoujoAi = searchParams.genresShoujoAi,
+                genresShounen = searchParams.genresShounen,
+                genresShounenAi = searchParams.genresShounenAi,
+                genresSliceOfLife = searchParams.genresSliceOfLife,
+                genresSmut = searchParams.genresSmut,
+                genresSports = searchParams.genresSports,
+                genresSupernatural = searchParams.genresSupernatural,
+                genresSuspense = searchParams.genresSuspense,
+                genresTragedy = searchParams.genresTragedy,
+                genresVampire = searchParams.genresVampire,
+                genresWebtoons = searchParams.genresWebtoons,
+                genresYoukai = searchParams.genresYoukai,
+                releasedMethod = searchParams.releasedMethod,
+                released = searchParams.released,
+                ratingMethod = searchParams.ratingMethod,
+                rating = searchParams.rating,
+                advopts = searchParams.advopts
+            ).await().postList.map {
+                Manga(
+                    title = it.title,
+                    coverUrl = it.coverUrl,
+                    url = it.mangaUrl.replaceFirst("/", BuildConfig.API_SERVER_MANGATOWN)
                 )
             })
         } catch (e: Exception) {

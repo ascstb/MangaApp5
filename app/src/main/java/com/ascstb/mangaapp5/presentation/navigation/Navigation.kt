@@ -12,6 +12,7 @@ interface Navigation {
 
     enum class MenuTitle(val title: String) {
         HOME("home"),
+        SEARCH("search"),
         ADVANCE_SEARCH("advance search"),
         FAVORITES("favorites"),
         NOT_FOUND("")

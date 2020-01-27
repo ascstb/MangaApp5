@@ -23,7 +23,7 @@ import timber.log.Timber
 class ViewerFragment :
     BaseFragment<BaseFragmentListener, ViewerViewModel, ViewerFragmentLayoutBinding>() {
     private val viewModel by viewModel<ViewerViewModel>()
-    private lateinit var layout: ViewerFragmentLayoutBinding
+    private var layout: ViewerFragmentLayoutBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,25 +31,31 @@ class ViewerFragment :
 
         vm.onPropertyChanged(BR.availablePages) {
             vm.loading = false
-            layout.spPages.hideSpinnerDropDown()
-            layout.spPages.waitForLayout {
-                layout.spPages.setSelection(vm.availablePages.indexOf(vm.currentPage), true)
-                layout.svContainer.focusOnView(layout.spPages)
+            layout?.spPages?.hideSpinnerDropDown()
+            layout?.spPages?.waitForLayout {
+                layout?.spPages?.setSelection(vm.availablePages.indexOf(vm.currentPage), true)
+                layout?.spPages?.let {
+                    layout?.svContainer?.focusOnView(it)
+                }
             }
         }
 
         vm.onPropertyChanged(BR.chapter) {
-            layout.spChapters.hideSpinnerDropDown()
-            layout.spChapters.waitForLayout {
-                layout.spChapters.setSelection(vm.availableChapters.indexOf(vm.chapter), true)
-                layout.svContainer.focusOnView(layout.spChapters)
+            layout?.spChapters?.hideSpinnerDropDown()
+            layout?.spChapters?.waitForLayout {
+                layout?.spChapters?.setSelection(vm.availableChapters.indexOf(vm.chapter), true)
+                layout?.spChapters?.let {
+                    layout?.svContainer?.focusOnView(it)
+                }
             }
         }
 
         vm.onPropertyChanged(BR.imageReady) {
             Timber.d("ViewerFragment_TAG: onPropertyChanged: imageReady: ${vm.imageReady}")
             vm.imageReady = false
-            layout.svContainer.focusOnView(layout.spChapters)
+            layout?.spChapters?.let {
+                layout?.svContainer?.focusOnView(it)
+            }
         }
     }
 
@@ -84,7 +90,7 @@ class ViewerFragment :
                 //vm.getPageAsync()
             }
 
-            layout.ivImage.setOnTouchListener(object : OnSwipeTouchListener(layout.root.context) {
+            binding.ivImage.setOnTouchListener(object : OnSwipeTouchListener(binding.root.context) {
                 override fun onSwipeRight() {
                     Timber.d("ViewerFragment_TAG: onSwipeRight: ")
                     viewModel.loading = true
