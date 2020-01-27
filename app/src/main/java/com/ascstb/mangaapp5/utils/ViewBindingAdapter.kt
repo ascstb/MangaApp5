@@ -1,5 +1,6 @@
 package com.ascstb.mangaapp5.utils
 
+import android.os.Parcelable
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
@@ -7,8 +8,6 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.ascstb.mangaapp5.R
-import com.ascstb.mangaapp5.model.MangaChapter
-import com.ascstb.mangaapp5.presentation.viewer.MangaChapterSpinnerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -99,16 +98,16 @@ fun visibility(view: View, visible: Boolean?) = when (visible) {
 }
 
 @Suppress("UNCHECKED_CAST")
-@BindingAdapter(value = ["dataSource", "selectVal"], requireAll = false)
-fun dataSource(spinner: Spinner, dataSource: List<Any>?, selectVal: (MangaChapter) -> Unit) {
+@BindingAdapter(value = ["dataSource", "selectVal", "textProp"], requireAll = false)
+fun dataSource(spinner: Spinner, dataSource: List<Parcelable>?, selectVal: (Parcelable) -> Unit, textProp: String) {
     dataSource?.let { ds ->
-        spinner.adapter = MangaChapterSpinnerAdapter(
+        spinner.adapter = GeneralSpinnerAdapter(
             ctx = spinner.context,
             resourceId = R.layout.base_spinner_item_layout,
-            dataSource = ds as List<MangaChapter>
-        ) { mangaChapterClicked ->
-            spinner.setSelection(dataSource.indexOf(mangaChapterClicked), true)
-            selectVal(mangaChapterClicked)
+            dataSource = dataSource,
+            textProp = textProp
+        ) { selectedItem ->
+            selectVal(selectedItem)
         }
     }
 }

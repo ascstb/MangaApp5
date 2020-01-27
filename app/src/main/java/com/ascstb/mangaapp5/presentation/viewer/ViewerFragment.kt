@@ -31,6 +31,11 @@ class ViewerFragment :
 
         vm.onPropertyChanged(BR.availablePages) {
             vm.loading = false
+            layout.spPages.hideSpinnerDropDown()
+            layout.spPages.waitForLayout {
+                layout.spPages.setSelection(vm.availablePages.indexOf(vm.currentPage), true)
+                layout.svContainer.focusOnView(layout.spPages)
+            }
         }
 
         vm.onPropertyChanged(BR.chapter) {

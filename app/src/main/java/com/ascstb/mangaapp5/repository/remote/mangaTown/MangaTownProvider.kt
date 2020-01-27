@@ -51,7 +51,7 @@ class MangaTownProvider(
                                 ),
                             chapterList = manga.chapterList.map { chapter ->
                                 MangaChapter(
-                                    name = chapter.name.replace(manga.title, ""),
+                                    name = "ch. ${chapter.name.replace(manga.title, "")}",
                                     url = chapter.url.replaceFirst(
                                         "/",
                                         BuildConfig.API_SERVER_MANGATOWN
@@ -80,9 +80,9 @@ class MangaTownProvider(
 
             RepositoryResponse.Ok(mangaTownAPI.getMangaPageAsync(formattedPath).await().let { response ->
                 MangaChapter(
-                    pages = response.pages.map {
+                    pages = response.pages.filter { it.text.toIntOrNull() != null }.map {
                         MangaPage(
-                            page = it.text,
+                            page = "page ${it.text}",
                             path = it.link,
                             imageUrl = if (it.selected.isNotEmpty()) response.imageUrl.replace(
                                 "//",
@@ -90,7 +90,7 @@ class MangaTownProvider(
                             ) else "",
                             imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
                         )
-                    }
+                    }.distinct()
                 )
             })
         } catch (e: Exception) {

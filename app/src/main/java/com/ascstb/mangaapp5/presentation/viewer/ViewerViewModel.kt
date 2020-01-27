@@ -1,5 +1,6 @@
 package com.ascstb.mangaapp5.presentation.viewer
 
+import android.os.Parcelable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import com.ascstb.mangaapp5.model.Manga
@@ -16,6 +17,7 @@ class ViewerViewModel(
 ) : BaseViewModel() {
     var manga: Manga? = null
 
+    //region Chapters
     val availableChapters: List<MangaChapter>
         get() = manga?.chapterList ?: emptyList()
 
@@ -28,6 +30,16 @@ class ViewerViewModel(
             notifyChange()
         }
 
+    val chapterTextProp: String = MangaChapter::name.name
+
+    val onChapterChanged = fun(itemClicked: Parcelable) {
+        val chapterSelected = itemClicked as MangaChapter
+        Timber.d("ViewerViewModel_TAG: chapterChanged: ${chapterSelected.name}")
+        chapter = chapterSelected
+    }
+    //endregion
+
+    //region Pages
     @get:Bindable
     var availablePages: List<MangaPage> = emptyList()
         set(value) {
@@ -39,15 +51,19 @@ class ViewerViewModel(
     var pageNumber: Int = 1
         set(value) {
             field = when {
-                value <= 1 -> 1
-                value > availablePages.size -> availablePages.size
+                value < 1 -> {
+                    changeChapter(1)
+                }
+                value > availablePages.size -> {
+                    changeChapter(-1)
+                }
                 else -> value
             }
 
             getPageAsync()
         }
 
-    private val currentPage: MangaPage?
+    val currentPage: MangaPage?
         get() = chapter?.pages?.let {
             if (it.size > pageNumber - 1)
                 it[pageNumber - 1]
@@ -57,14 +73,23 @@ class ViewerViewModel(
     val currentPageImageUrl: String?
         get() = currentPage?.imageUrl
 
+    val pageTextProp: String = MangaPage::page.name
+
+    val onPageChanged = fun(itemClicked: Parcelable) {
+        val pageSelected = itemClicked as MangaPage
+        Timber.d("ViewerViewModel_TAG: pageChanged: ${pageSelected.imageUrl}")
+        pageNumber = availablePages.indexOf(pageSelected) + 1
+    }
+    //endregion
+
     @get:Bindable
     var imageReady = false
-    set(value) {
-        field = value
-        if (value) {
-            notifyPropertyChanged(BR.imageReady)
+        set(value) {
+            field = value
+            if (value) {
+                notifyPropertyChanged(BR.imageReady)
+            }
         }
-    }
 
     private fun getPageAsync() = background {
         Timber.d("ViewerViewModel_TAG: getPageAsync: ")
@@ -83,9 +108,23 @@ class ViewerViewModel(
         }
     }
 
-    val onChapterChanged = fun (mangaChapterClicked: MangaChapter) {
-        Timber.d("ViewerViewModel_TAG: chapterChanged: ${mangaChapterClicked.name}")
-        chapter = mangaChapterClicked
+    private fun changeChapter(addedIndex: Int): Int {
+        var newPageNumber = 1
+        if (availablePages.isEmpty()) return newPageNumber
+
+        Timber.d("ViewerViewModel_TAG: changeChapter: nextIndex: $addedIndex")
+        val nextIndex = availableChapters.indexOf(chapter) + addedIndex
+        val safeNextIndex = when {
+            nextIndex < 0 -> 0
+            nextIndex >= availableChapters.size -> {
+                newPageNumber = availablePages.size
+                availableChapters.size - 1
+            }
+            else -> nextIndex
+        }
+        chapter = availableChapters[safeNextIndex]
+
+        return newPageNumber
     }
 
     fun onImageReady() {

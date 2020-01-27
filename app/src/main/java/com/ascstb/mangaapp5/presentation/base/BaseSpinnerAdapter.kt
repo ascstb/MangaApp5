@@ -22,7 +22,7 @@ abstract class BaseSpinnerAdapter<IT : Parcelable>(
 
     override fun getItemId(position: Int): Long = position.toLong()
 
-    protected abstract fun getTextProperty(classType: IT): String
+    protected abstract fun getTextProperty(): String
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val tv: TextView = super.getView(position, convertView, parent) as TextView
@@ -34,7 +34,7 @@ abstract class BaseSpinnerAdapter<IT : Parcelable>(
                 ""
             } else {
                 dataSource[position].let { item ->
-                    readInstanceProperty<String>(item, getTextProperty(item))
+                    readInstanceProperty<String>(item, getTextProperty())
                 }
             }
         }
@@ -55,7 +55,7 @@ abstract class BaseSpinnerAdapter<IT : Parcelable>(
             } else {
                 dataSource[position].let { item ->
                     setOnClickListener { listener(item) }
-                    readInstanceProperty<String>(item, getTextProperty(item))
+                    readInstanceProperty<String>(item, getTextProperty())
                 }
             }
         }

@@ -34,6 +34,7 @@
                 android:padding="10dp"
                 app:dataSource="@{viewModel.availableChapters}"
                 app:selectVal="@{viewModel.onChapterChanged}"
+                app:textProp="@{viewModel.chapterTextProp}"
                 app:layout_constraintEnd_toStartOf="@id/spPages"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +46,9 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:padding="10dp"
+                app:dataSource="@{viewModel.availablePages}"
+                app:selectVal="@{viewModel.onPageChanged}"
+                app:textProp="@{viewModel.pageTextProp}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/spChapters"
                 app:layout_constraintTop_toTopOf="parent" />
