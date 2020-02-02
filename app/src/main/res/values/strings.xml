@@ -24,6 +24,8 @@
     <string name="search_button">Search</string>
     <string name="last_page_reached">This is the last available page</string>
 
+    <string name="exit_message">Click again to exit</string>
+
     <string-array name="mangaTownTpes">
         <item>Japanese Manga</item>
         <item>Korean Manhwa</item>

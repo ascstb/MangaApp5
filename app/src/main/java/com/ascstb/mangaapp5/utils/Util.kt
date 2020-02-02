@@ -25,8 +25,6 @@ inline fun View.waitForLayout(crossinline f: () -> Unit) = with(viewTreeObserver
     })
 }
 
-
-
 @Suppress("UNCHECKED_CAST")
 fun <R> readInstanceProperty(instance: Any, propertyName: String): R {
     val property = instance::class.memberProperties
