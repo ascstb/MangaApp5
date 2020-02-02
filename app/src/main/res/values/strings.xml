@@ -20,4 +20,12 @@
     <string name="author_name_label">Author Name</string>
     <string name="artist_name_label">Artist Name</string>
     <string name="search_button">Search</string>
+    <string name="last_page_reached">This is the last available page</string>
+
+    <string-array name="mangaTownTpes">
+        <item>Japanese Manga</item>
+        <item>Korean Manhwa</item>
+        <item>Chinese Manhua</item>
+        <item>Show All</item>
+    </string-array>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.library.baseAdapters.BR
 import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.core.CHAPTER_DATA
@@ -55,6 +56,13 @@ class ViewerFragment :
             vm.imageReady = false
             layout?.spChapters?.let {
                 layout?.svContainer?.focusOnView(it)
+            }
+        }
+
+        vm.onPropertyChanged(BR.lastPageAvailableReached) {
+            Timber.d("ViewerFragment_TAG: onCreate: lastPageAvailableReached")
+            context?.let {
+                Toast.makeText(it, R.string.last_page_reached, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -115,13 +123,11 @@ class ViewerFragment :
 
     fun onVolumeDown() {
         Timber.d("ViewerFragment_TAG: onVolumeDown: ")
-        viewModel.loading = true
         viewModel.pageNumber++
     }
 
     fun onVolumeUp() {
         Timber.d("ViewerFragment_TAG: onVolumeUp: ")
-        viewModel.loading = true
         viewModel.pageNumber--
     }
 }

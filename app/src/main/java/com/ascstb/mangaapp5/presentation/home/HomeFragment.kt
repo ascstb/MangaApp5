@@ -68,7 +68,7 @@ class HomeFragment : BaseFragment<BaseFragmentListener, HomeViewModel, FragmentH
     }
 
     private fun onMangaClicked(manga: Manga) {
-        Timber.d("HomeFragment_TAG: onMangaClicked: $manga")
+        Timber.d("HomeFragment_TAG: onMangaClicked: ${manga.title}")
         listener?.onClicked(
             fromFragment = this,
             extras = Bundle().apply {

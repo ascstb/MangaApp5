@@ -104,7 +104,7 @@ fun dataSource(spinner: Spinner, dataSource: List<Parcelable>?, selectVal: (Parc
         spinner.adapter = GeneralSpinnerAdapter(
             ctx = spinner.context,
             resourceId = R.layout.base_spinner_item_layout,
-            dataSource = dataSource,
+            dataSource = ds,
             textProp = textProp
         ) { selectedItem ->
             selectVal(selectedItem)

@@ -50,6 +50,7 @@ class ViewerViewModel(
 
     var pageNumber: Int = 1
         set(value) {
+            lastPageAvailableReached = false
             field = when {
                 value < 1 -> {
                     changeChapter(1)
@@ -80,6 +81,15 @@ class ViewerViewModel(
         Timber.d("ViewerViewModel_TAG: pageChanged: ${pageSelected.imageUrl}")
         pageNumber = availablePages.indexOf(pageSelected) + 1
     }
+
+    @get:Bindable
+    var lastPageAvailableReached: Boolean = false
+        set(value) {
+            field = value
+            if (value)
+                notifyPropertyChanged(BR.lastPageAvailableReached)
+        }
+
     //endregion
 
     @get:Bindable
@@ -93,6 +103,9 @@ class ViewerViewModel(
 
     private fun getPageAsync() = background {
         Timber.d("ViewerViewModel_TAG: getPageAsync: ")
+        if (lastPageAvailableReached) return@background
+
+        loading = true
         chapter?.let { ch ->
             repository.getMangaPageAsync(ch.url, pageNumber).runOnResult {
                 when (this) {
@@ -114,13 +127,19 @@ class ViewerViewModel(
 
         Timber.d("ViewerViewModel_TAG: changeChapter: nextIndex: $addedIndex")
         val nextIndex = availableChapters.indexOf(chapter) + addedIndex
-        val safeNextIndex = when {
-            nextIndex < 0 -> 0
-            nextIndex >= availableChapters.size -> {
-                newPageNumber = availablePages.size
-                availableChapters.size - 1
+        val safeNextIndex: Int
+        when {
+            nextIndex < 0 -> {
+                lastPageAvailableReached = true
+                return availablePages.size
             }
-            else -> nextIndex
+            nextIndex >= availableChapters.size -> {
+                newPageNumber = 0
+                safeNextIndex = availableChapters.size - 1
+            }
+            else -> {
+                safeNextIndex = nextIndex
+            }
         }
         chapter = availableChapters[safeNextIndex]
 

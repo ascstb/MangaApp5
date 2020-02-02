@@ -15,6 +15,8 @@ import timber.log.Timber
 class MangaTownProvider(
     private val mangaTownAPI: MangaTownAPI
 ) : ServerRepository {
+    private var cachedPages = mutableMapOf<String, MangaChapter>()
+
     override fun getLatestReleasesAsync(page: Int): Deferred<RepositoryResponse<List<Manga>>> =
         GlobalScope.async {
             try {
@@ -79,21 +81,26 @@ class MangaTownProvider(
                 "${path.replaceFirst(BuildConfig.API_SERVER_MANGATOWN, "")}$pageNumber.html"
             } else path
 
-            RepositoryResponse.Ok(mangaTownAPI.getMangaPageAsync(formattedPath).await().let { response ->
-                MangaChapter(
-                    pages = response.pages.filter { it.text.toIntOrNull() != null }.map {
-                        MangaPage(
-                            page = "page ${it.text}",
-                            path = it.link,
-                            imageUrl = if (it.selected.isNotEmpty()) response.imageUrl.replace(
-                                "//",
-                                "http://"
-                            ) else "",
-                            imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
+            RepositoryResponse.Ok(
+                cachedPages[formattedPath]
+                    ?: mangaTownAPI.getMangaPageAsync(formattedPath).await().let { response ->
+                        MangaChapter(
+                            pages = response.pages.filter { it.text.toIntOrNull() != null }.map {
+                                MangaPage(
+                                    page = "page ${it.text}",
+                                    path = it.link,
+                                    imageUrl = if (it.selected.isNotEmpty()) response.imageUrl.replace(
+                                        "//",
+                                        "http://"
+                                    ) else "",
+                                    imageDescription = if (it.selected.isNotEmpty()) response.imageDescription else ""
+                                )
+                            }.distinct()
                         )
-                    }.distinct()
-                )
-            })
+                    }.run {
+                        cachedPages[formattedPath] = this
+                        this
+                    })
         } catch (e: Exception) {
             Timber.d("MangaTownProvider_TAG: getMangaPageAsync: exception: ${e.message}")
             RepositoryResponse.Error(e)
