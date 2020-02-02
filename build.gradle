@@ -43,6 +43,8 @@ ext {
     okhttp = "3.14.1"
     recyclerview = "28.0.0"
     jspoon = '1.3.2'
+    room = '1.1.1'
+    androidXUI = '2.2.0'
 }
 
 def getProps(path) {

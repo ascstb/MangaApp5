@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.core.Session
+import com.ascstb.mangaapp5.presentation.bookmarks.BookmarksFragment
 import com.ascstb.mangaapp5.presentation.home.HomeFragment
 import com.ascstb.mangaapp5.presentation.mangaDetails.MangaDetailsFragment
 import com.ascstb.mangaapp5.presentation.search.SearchFragment
@@ -30,6 +31,7 @@ class NavigationImpl : Navigation {
             Navigation.MenuTitle.ADVANCE_SEARCH,
             Navigation.MenuTitle.FAVORITES -> HomeFragment()
             Navigation.MenuTitle.SEARCH -> SearchFragment()
+            Navigation.MenuTitle.BOOKMARKS -> BookmarksFragment()
             else -> return
         }
         navigateToContent(activity, menuFragment, extras)
@@ -43,6 +45,7 @@ class NavigationImpl : Navigation {
 
     private fun getDetailsScreen(from: Class<*>): Fragment? = when (from) {
         HomeFragment::class.java,
+        BookmarksFragment::class.java,
         SearchFragment::class.java -> MangaDetailsFragment()
         MangaDetailsFragment::class.java -> ViewerFragment()
         else -> null

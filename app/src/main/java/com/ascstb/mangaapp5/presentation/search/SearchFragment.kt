@@ -1,8 +1,10 @@
 package com.ascstb.mangaapp5.presentation.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ascstb.mangaapp5.core.MANGA_DATA
@@ -38,7 +40,13 @@ class SearchFragment : BaseFragment<BaseFragmentListener, SearchViewModel, Searc
         initRecyclerView()
 
         layout.btnSearch.setOnClickListener {
+            vm.loading = true
             vm.getResultsAsync()
+
+            activity?.let { act ->
+                val imm = act.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                imm?.hideSoftInputFromWindow(it.windowToken, 0)
+            }
         }
     }
 

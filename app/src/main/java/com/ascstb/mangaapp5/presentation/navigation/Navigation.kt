@@ -14,6 +14,7 @@ interface Navigation {
         HOME("home"),
         SEARCH("search"),
         ADVANCE_SEARCH("advance search"),
+        BOOKMARKS("bookmarks"),
         FAVORITES("favorites"),
         NOT_FOUND("")
         ;

@@ -13,7 +13,7 @@ import timber.log.Timber
 
 class SearchViewModel(
     private val repository: ServerRepository
-) : BaseViewModel(){
+) : BaseViewModel() {
     @Bindable
     var seriesName: String = ""
 
@@ -25,23 +25,27 @@ class SearchViewModel(
 
     @get:Bindable
     var searchResults = emptyList<Manga>()
-    set(value) {
-        field = value
-        recyclerItemsViewModel = value.map { MangaItemViewModel().apply { manga = it } }.toMutableList()
-        notifyPropertyChanged(BR.searchResults)
-    }
+        set(value) {
+            field = value
+            recyclerItemsViewModel =
+                value.map { MangaItemViewModel().apply { manga = it } }.toMutableList()
+            notifyPropertyChanged(BR.searchResults)
+        }
 
     var recyclerItemsViewModel = mutableListOf<MangaItemViewModel>()
         private set
 
     fun getResultsAsync() = background {
         Timber.d("SearchViewModel_TAG: getResultsAsync: ")
-        repository.getMangaSearchResultsAsync(SearchParameters(
-            name = seriesName,
-            author = authorName,
-            artist = artistName
-        )).runOnResult {
-            when(this) {
+        repository.getMangaSearchResultsAsync(
+            SearchParameters(
+                name = seriesName,
+                author = authorName,
+                artist = artistName
+            )
+        ).runOnResult {
+            loading = false
+            when (this) {
                 is RepositoryResponse.Error -> Timber.d("SearchViewModel_TAG: getResultsAsync: error: $error")
                 is RepositoryResponse.Ok -> {
                     searchResults = result

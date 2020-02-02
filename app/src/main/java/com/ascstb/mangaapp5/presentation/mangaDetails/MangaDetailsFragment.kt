@@ -24,10 +24,15 @@ class MangaDetailsFragment :
         super.onCreate(savedInstanceState)
         vm = viewModel
         vm.loading = true
+
         vm.onPropertyChanged(BR.availableChapters) {
             Timber.d("MangaDetailsFragment_TAG: onCreate: availableChaptersChanged")
             chapterAdapter.itemList = viewModel.recyclerItemsViewModel
             vm.loading = false
+        }
+
+        vm.onPropertyChanged(BR.bookmarked) {
+            Timber.d("MangaDetailsFragment_TAG: onCreate: bookmarked: ${vm.bookmarked}")
         }
     }
 
@@ -37,6 +42,8 @@ class MangaDetailsFragment :
     ): MangaDetailsFragmentBinding =
         MangaDetailsFragmentBinding.inflate(inflater, container, false).also { layout ->
             Timber.d("MangaDetailsFragment_TAG: inflateDataBinding: ")
+            layout.btnBookmark.setOnClickListener { vm.bookmarkManga() }
+
             arguments?.let {
                 vm.manga = it.getParcelable(MANGA_DATA)
                 initRecyclerView(layout)
