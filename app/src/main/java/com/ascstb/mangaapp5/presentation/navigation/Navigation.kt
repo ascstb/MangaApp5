@@ -7,6 +7,7 @@ import java.util.*
 
 interface Navigation {
     fun menuClicked(activity: AppCompatActivity, menuTitle: MenuTitle, extras: Bundle? = null)
+    fun goToTools(activity: AppCompatActivity, toolbarMenu: ToolbarMenu, extras: Bundle? = null)
     fun goToDetails(activity: AppCompatActivity, fromFragment: Fragment, extras: Bundle? = null)
     fun loadCurrentFragment(activity: AppCompatActivity)
 
@@ -18,6 +19,17 @@ interface Navigation {
         FAVORITES("favorites"),
         NOT_FOUND("")
         ;
+
+        companion object {
+            fun fromTitle(title: String) = values().firstOrNull {
+                it.title == title.toLowerCase(Locale.US)
+            } ?: NOT_FOUND
+        }
+    }
+
+    enum class ToolbarMenu(val title: String) {
+        FILTER("filters"),
+        NOT_FOUND("");
 
         companion object {
             fun fromTitle(title: String) = values().firstOrNull {

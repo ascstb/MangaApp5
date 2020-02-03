@@ -2,8 +2,10 @@ package com.ascstb.mangaapp5.presentation
 
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.core.Session
@@ -19,23 +21,17 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity(), BaseFragmentListener {
     private val navigation by inject<Navigation>()
     private lateinit var navView: BottomNavigationView
+    private lateinit var toolbar: Toolbar
     private var enableExit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("MainActivity_TAG: onCreate: ")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        navView = findViewById(R.id.nav_view)
 
-        navView.setOnNavigationItemSelectedListener {
-            Timber.d("MainActivity_TAG: onCreate: onNavigationItemSelected: $it")
-            navigation.menuClicked(
-                activity = this,
-                menuTitle = Navigation.MenuTitle.fromTitle(it.title.toString())
-            )
+        setNavView()
 
-            return@setOnNavigationItemSelectedListener true
-        }
+        setToolbar()
 
         if (Session.currentFragment == null) {
             navigation.menuClicked(
@@ -45,6 +41,38 @@ class MainActivity : AppCompatActivity(), BaseFragmentListener {
         } else {
             navigation.loadCurrentFragment(this)
         }
+    }
+
+    private fun setToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setOnMenuItemClickListener {
+            Timber.d("MainActivity_TAG: setToolbar: $it")
+            navigation.goToTools(
+                activity = this,
+                toolbarMenu =  Navigation.ToolbarMenu.fromTitle(it.title.toString())
+            )
+
+            return@setOnMenuItemClickListener true
+        }
+    }
+
+    private fun setNavView() {
+        navView = findViewById(R.id.nav_view)
+        navView.setOnNavigationItemSelectedListener {
+            Timber.d("MainActivity_TAG: onCreate: onNavigationItemSelected: $it")
+            navigation.menuClicked(
+                activity = this,
+                menuTitle = Navigation.MenuTitle.fromTitle(it.title.toString())
+            )
+
+            return@setOnNavigationItemSelectedListener true
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
     }
 
     override fun onFocused() {

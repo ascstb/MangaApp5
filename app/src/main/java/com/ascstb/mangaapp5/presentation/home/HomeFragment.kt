@@ -30,6 +30,11 @@ class HomeFragment : BaseFragment<BaseFragmentListener, HomeViewModel, FragmentH
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Session.currentFragment = this
+    }
+
     override fun inflateDataBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

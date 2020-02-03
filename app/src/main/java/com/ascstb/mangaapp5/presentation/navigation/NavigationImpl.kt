@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.ascstb.mangaapp5.R
 import com.ascstb.mangaapp5.core.Session
 import com.ascstb.mangaapp5.presentation.bookmarks.BookmarksFragment
+import com.ascstb.mangaapp5.presentation.home.FilterFragment
 import com.ascstb.mangaapp5.presentation.home.HomeFragment
 import com.ascstb.mangaapp5.presentation.mangaDetails.MangaDetailsFragment
 import com.ascstb.mangaapp5.presentation.search.SearchFragment
@@ -34,7 +35,20 @@ class NavigationImpl : Navigation {
             Navigation.MenuTitle.BOOKMARKS -> BookmarksFragment()
             else -> return
         }
-        navigateToContent(activity, menuFragment, extras)
+        navigateToContent(activity, menuFragment, extras, menuTitle.title)
+    }
+
+    override fun goToTools(
+        activity: AppCompatActivity,
+        toolbarMenu: Navigation.ToolbarMenu,
+        extras: Bundle?
+    ) {
+        Timber.d("NavigationImpl_TAG: goToTools: $toolbarMenu")
+        val toolbarFragment = when(toolbarMenu) {
+            Navigation.ToolbarMenu.FILTER -> FilterFragment()
+            else -> return
+        }
+        navigateToContent(activity, toolbarFragment, extras, toolbarMenu.title)
     }
 
     override fun loadCurrentFragment(activity: AppCompatActivity) {
@@ -54,9 +68,9 @@ class NavigationImpl : Navigation {
     private fun navigateToContent(
         activity: AppCompatActivity,
         fragment: Fragment,
-        extras: Bundle? = null
+        extras: Bundle? = null,
+        title: String = ""
     ) {
-        //Timber.d("NavigationImpl_TAG: navigateToContent: extras: $extras")
         fragment.arguments = extras
 
         activity.supportFragmentManager
@@ -64,6 +78,8 @@ class NavigationImpl : Navigation {
             .replace(R.id.nav_host_fragment, fragment)
             .addToBackStack(fragment.tag)
             .commit()
+
+        activity.supportActionBar?.title = title.capitalize()
 
         Session.currentFragment = fragment
     }
