@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
+@ExperimentalStdlibApi
 class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()

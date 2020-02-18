@@ -10,9 +10,12 @@ import com.ascstb.mangaapp5.presentation.home.FilterFragment
 import com.ascstb.mangaapp5.presentation.home.HomeFragment
 import com.ascstb.mangaapp5.presentation.mangaDetails.MangaDetailsFragment
 import com.ascstb.mangaapp5.presentation.search.SearchFragment
+import com.ascstb.mangaapp5.presentation.settings.SettingsFragment
 import com.ascstb.mangaapp5.presentation.viewer.ViewerFragment
 import timber.log.Timber
+import java.util.*
 
+@ExperimentalStdlibApi
 class NavigationImpl : Navigation {
     override fun goToDetails(activity: AppCompatActivity, fromFragment: Fragment, extras: Bundle?) {
         Timber.d("NavigationImpl_TAG: goToDetails: from: ${fromFragment::class.java.simpleName}")
@@ -33,6 +36,7 @@ class NavigationImpl : Navigation {
             Navigation.MenuTitle.FAVORITES -> HomeFragment()
             Navigation.MenuTitle.SEARCH -> SearchFragment()
             Navigation.MenuTitle.BOOKMARKS -> BookmarksFragment()
+            Navigation.MenuTitle.SETTINGS -> SettingsFragment()
             else -> return
         }
         navigateToContent(activity, menuFragment, extras, menuTitle.title)
@@ -44,7 +48,7 @@ class NavigationImpl : Navigation {
         extras: Bundle?
     ) {
         Timber.d("NavigationImpl_TAG: goToTools: $toolbarMenu")
-        val toolbarFragment = when(toolbarMenu) {
+        val toolbarFragment = when (toolbarMenu) {
             Navigation.ToolbarMenu.FILTER -> FilterFragment()
             else -> return
         }
@@ -79,7 +83,7 @@ class NavigationImpl : Navigation {
             .addToBackStack(fragment.tag)
             .commit()
 
-        activity.supportActionBar?.title = title.capitalize()
+        activity.supportActionBar?.title = title.capitalize(Locale.US)
 
         Session.currentFragment = fragment
     }

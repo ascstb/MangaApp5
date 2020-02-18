@@ -34,7 +34,13 @@ abstract class BaseSpinnerAdapter<IT : Parcelable>(
                 ""
             } else {
                 dataSource[position].let { item ->
-                    readInstanceProperty<String>(item, getTextProperty())
+                    try {
+                        readInstanceProperty<String>(item, getTextProperty())
+                    } catch (e: Exception) {
+                        readInstanceProperty<Int>(item, getTextProperty()).toString()
+                    } catch (e: Exception) {
+                        ""
+                    }
                 }
             }
         }
@@ -55,7 +61,13 @@ abstract class BaseSpinnerAdapter<IT : Parcelable>(
             } else {
                 dataSource[position].let { item ->
                     setOnClickListener { listener(item) }
-                    readInstanceProperty<String>(item, getTextProperty())
+                    try {
+                        readInstanceProperty<String>(item, getTextProperty())
+                    } catch (e: Exception) {
+                        readInstanceProperty<Int>(item, getTextProperty()).toString()
+                    } catch (e: Exception) {
+                        ""
+                    }
                 }
             }
         }

@@ -26,11 +26,22 @@
 
     <string name="exit_message">Click again to exit</string>
     <string name="title_filters">Filters</string>
+    <string name="source_label">Source</string>
+    <string name="list_type_label">List Type</string>
+    <string name="grid_label">Grid</string>
+    <string name="list_label">List</string>
+    <string name="apply_button">Apply</string>
+    <string name="settings_menu">settings</string>
 
     <string-array name="mangaTownTpes">
         <item>Japanese Manga</item>
         <item>Korean Manhwa</item>
         <item>Chinese Manhua</item>
         <item>Show All</item>
+    </string-array>
+
+    <string-array name="sources">
+        <item>Manga Town</item>
+        <item>Holy Manga</item>
     </string-array>
 </resources>
